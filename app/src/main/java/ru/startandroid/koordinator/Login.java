@@ -75,6 +75,7 @@ public class Login extends AppCompatActivity {
             intent.putExtra("user_id", ID);
             intent.putExtra("login", "1");
             startActivity(intent);
+            finish();
         }
 
     }

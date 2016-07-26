@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.SimpleExpandableListAdapter;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -93,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             });
         }
     }
+
+
 
     public void zapolnenie_list (){
         // названия компаний (групп)
