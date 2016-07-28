@@ -35,22 +35,21 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     ExpandableListView elvMain;
     SwipeRefreshLayout mSwipeRefreshLayout;
-
+    public settings SET_KOORDINATOR = new settings();
+    public out_helper TampleteSqlQuery;
     public static String LOG_TAG = "my_log";
-    public String User_ID = null;
-    public String Loggin_True = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        User_ID = getIntent().getStringExtra("user_id");
-        Loggin_True = getIntent().getStringExtra("login");
-
-        if (!Loggin_True.equals("1")) {
+        SET_KOORDINATOR.User_ID = getIntent().getStringExtra("user_id");
+        SET_KOORDINATOR.Loggin_True = getIntent().getBooleanExtra("login", false);
+        if (!SET_KOORDINATOR.Loggin_True) {
             Intent intent = new Intent(this, Login.class);
             startActivity(intent);
         } else {
+            TampleteSqlQuery = new out_helper(this);
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
 
@@ -72,7 +71,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             navigationView.setNavigationItemSelectedListener(this);
 
-            zapolnenie_list();
+            new AsyncTask<Void, Void, Boolean>() {
+
+                @Override
+                protected Boolean doInBackground(Void... params) {
+                    if (SET_KOORDINATOR.Loggin_True) {
+                        return update();
+                    } else
+                        return false;
+                }
+
+                @Override
+                protected void onPostExecute(Boolean OutHttp) {
+                    super.onPostExecute(OutHttp);
+                    if (OutHttp) {
+                        TampleteSqlQuery.OutListGroupGroup(SET_KOORDINATOR);
+                    }
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            }.execute();
 
             // /You will setup the action bar with pull to refresh layout
             mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
@@ -86,14 +103,71 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    zapolnenie_list();
-                    mSwipeRefreshLayout.setRefreshing(false);
+                    new AsyncTask<Void, Void, Boolean>() {
+
+                        @Override
+                        protected Boolean doInBackground(Void... params) {
+                            if (SET_KOORDINATOR.Loggin_True) {
+                                return update();
+                            } else
+                                return false;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Boolean OutHttp) {
+                            super.onPostExecute(OutHttp);
+                            if (OutHttp) {
+                                TampleteSqlQuery.OutListGroupGroup(SET_KOORDINATOR);
+                            }
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
+                    }.execute();
                 }
             });
         }
     }
 
+    private boolean update(){
+        /*
+        * Авторизация
+        * URL: DomainURL + "update"
+        * Тип POST: id
+        * Получение: ['tasks_list' = array, 'users' = array, 'group' = array, 'settings' = array, 'status_tasks' = array]
+        * */
+        String out = "";
+        http QHttp;
+        QHttp = new http();
+        HashMap<String, String> postData = new HashMap<String, String>();
+        String sqlQuery;
+        String sqlQueryName;
+        String sqlQueryValue;
 
+        postData.put("id", SET_KOORDINATOR.User_ID);
+
+        out = QHttp.http_query("update.php", postData);
+
+        try {
+            if (!out.equals("")){
+                //Получаем ответ с сайта в виде JSON и прасим его для загрузки в БД
+                JSONObject dataJsonObj = new JSONObject(out);
+
+                //Узнаем имя таблиц которых надо сделать изменения.
+                for (int i = 0; i < dataJsonObj.names().length(); i++) {
+
+                    JSONObject dataJsonObj2 = dataJsonObj.getJSONObject(dataJsonObj.names().getString(i));
+
+                    //Выводим все данные которые надо вставить(изменить) в таблице dataJsonObj.names().getString(i).
+                        sqlQuery = "INSERT OR REPLACE INTO " + dataJsonObj.names().getString(i)
+                                + dataJsonObj2.getString("name")
+                                + " VALUES " + dataJsonObj2.getString("values");
+
+                }
+            }
+        } catch (JSONException e) {
+                        // Something went wrong!
+        }
+        return false;
+    }
 
     public void zapolnenie_list (){
         // названия компаний (групп)
@@ -176,10 +250,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         elvMain = (ExpandableListView) findViewById(R.id.elvMain);
         elvMain.setAdapter(adapter);
-    }
-
-    public void set_user_id(String id) {
-        User_ID = id;
     }
 
     private class ParseTask extends AsyncTask<Void, Void, String> {
@@ -281,6 +351,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         } else if (id == R.id.action_update){
             new ParseTask().execute();

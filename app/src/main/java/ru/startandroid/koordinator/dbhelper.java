@@ -188,7 +188,7 @@ public class dbhelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // создаем таблицу с полями
         db.execSQL("create table " + tasks_list_fields.TABLE_NAME + " ("
-                + tasks_list_fields.KEY_ID + " integer primary key autoincrement,"
+                + tasks_list_fields.KEY_ID + " integer primary key,"
                 + tasks_list_fields.KEY_INFO + " text,"
                 + tasks_list_fields.KEY_ID_STATUS_TASKS + " integer,"
                 + tasks_list_fields.KEY_ID_USERS + " integer,"
@@ -197,21 +197,21 @@ public class dbhelper extends SQLiteOpenHelper {
                 + tasks_list_fields.KEY_STREET + " text" + ");");
 
         db.execSQL("create table " + users_fields.TABLE_NAME + " ("
-                + users_fields.KEY_ID + " integer primary key autoincrement,"
+                + users_fields.KEY_ID + " integer primary key,"
                 + users_fields.KEY_FIO + " text,"
                 + users_fields.KEY_ID_GROUP + " integer" + ");");
 
         db.execSQL("create table " + group_fields.TABLE_NAME + " ("
-                + group_fields.KEY_ID + " integer primary key autoincrement,"
+                + group_fields.KEY_ID + " integer primary key,"
                 + group_fields.KEY_NAME + " text" + ");");
 
         db.execSQL("create table " + settings_fields.TABLE_NAME + " ("
-                + settings_fields.KEY_ID + "id_settings integer primary key autoincrement,"
+                + settings_fields.KEY_ID + "id_settings integer primary key,"
                 + settings_fields.KEY_NAME + "name text,"
                 + settings_fields.KEY_VALUE + "value integer" + ");");
 
         db.execSQL("create table " + status_tasks_fields.TABLE_NAME + " ("
-                + status_tasks_fields.KEY_ID + " integer primary key autoincrement,"
+                + status_tasks_fields.KEY_ID + " integer primary key ,"
                 + status_tasks_fields.KEY_NAME + " text" + ");");
     }
 

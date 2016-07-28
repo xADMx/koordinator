@@ -59,27 +59,24 @@ public class Login extends AppCompatActivity {
 
     public void signinclick(View view) {
         new AsyncTask<Void, Void, String>() {
-            private Exception exception;
-
             @Override
             protected String doInBackground(Void... params) {
-       return signin_true();
+                return signin_true();
+            }
 
-    }
+            @Override
+            protected void onPostExecute(String ID) {
+                super.onPostExecute(ID);
+                if (!ID.equals("")) {
+                    Intent intent = new Intent(ru.startandroid.koordinator.Login.this, ru.startandroid.koordinator.MainActivity.class);
+                    intent.putExtra("user_id", ID);
+                    intent.putExtra("login", true);
+                    startActivity(intent);
+                    finish();
+                }
 
-    @Override
-    protected void onPostExecute(String ID) {
-        super.onPostExecute(ID);
-        if (!ID.equals("")) {
-            Intent intent = new Intent(ru.startandroid.koordinator.Login.this, ru.startandroid.koordinator.MainActivity.class);
-            intent.putExtra("user_id", ID);
-            intent.putExtra("login", "1");
-            startActivity(intent);
-            finish();
-        }
-
-    }
-}.execute();
+            }
+        }.execute();
     }
 
 }
