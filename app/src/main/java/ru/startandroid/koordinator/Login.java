@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 public class Login extends AppCompatActivity {
+    http QHttp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,6 @@ public class Login extends AppCompatActivity {
         * Получение: ['valid' = '1' or '0', 'id' = 'int']
         * */
         String out = "";
-        http QHttp;
         QHttp = new http();
         HashMap<String, String> postData = new HashMap<String, String>();
 
@@ -38,9 +38,7 @@ public class Login extends AppCompatActivity {
         postData.put("login", emailtxt.getText().toString());
         postData.put("pass", passtxt.getText().toString());
 
-        //out = QHttp.http("api/signin", postData);
-
-        out = QHttp.http_query("", postData);
+        out = QHttp.http_query("auth", postData);
 
         try {
             if (!out.equals("")){

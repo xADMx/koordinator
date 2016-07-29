@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public settings SET_KOORDINATOR = new settings();
     public out_helper TampleteSqlQuery;
     public static String LOG_TAG = "my_log";
+    public http QHttp = new http();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,8 +136,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         * Получение: ['tasks_list' = array, 'users' = array, 'group' = array, 'settings' = array, 'status_tasks' = array]
         * */
         String out = "";
-        http QHttp;
-        QHttp = new http();
         HashMap<String, String> postData = new HashMap<String, String>();
         String sqlQuery;
         String sqlQueryName;
@@ -144,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         postData.put("id", SET_KOORDINATOR.User_ID);
 
-        out = QHttp.http_query("update.php", postData);
+        out = QHttp.http_query("update", postData);
 
         try {
             if (!out.equals("")){

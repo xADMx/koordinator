@@ -33,13 +33,13 @@ public class dbhelper extends SQLiteOpenHelper {
         public final String TABLE_NAME = "users";
         public final String KEY_ID = "id_users";
         public final String KEY_FIO = "fio";
-        public final String KEY_ID_GROUP = "id_group";
+        public final String KEY_ID_GROUP = "id_group_users";
     }
 
     public static class group{
-        public final String TABLE_NAME = "group";
+        public final String TABLE_NAME = "group_users";
         public final String KEY_NAME = "name";
-        public final String KEY_ID = "id_group";
+        public final String KEY_ID = "id_group_users";
     }
 
     public static class settings{

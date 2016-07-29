@@ -18,7 +18,7 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by ADM on 25.07.2016.
  */
 public class http {
-    public static String DomainURL = "http://192.168.0.177/";
+    public static String DomainURL = "http://192.168.0.177/api/";
     String response = "";
 
     public String http_query(String requestURL,
