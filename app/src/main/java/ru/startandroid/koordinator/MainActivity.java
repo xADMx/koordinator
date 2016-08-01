@@ -138,8 +138,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String out = "";
         HashMap<String, String> postData = new HashMap<String, String>();
         String sqlQuery;
-        String sqlQueryName;
-        String sqlQueryValue;
 
         postData.put("id", SET_KOORDINATOR.User_ID);
 
@@ -157,9 +155,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     //Выводим все данные которые надо вставить(изменить) в таблице dataJsonObj.names().getString(i).
                         sqlQuery = "INSERT OR REPLACE INTO " + dataJsonObj.names().getString(i)
-                                + dataJsonObj2.getString("name")
+                                + " " + dataJsonObj2.getString("name")
                                 + " VALUES " + dataJsonObj2.getString("values");
-
                 }
             }
         } catch (JSONException e) {
@@ -384,5 +381,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void alltasks(int id) {
+        Intent intent = new Intent(this, ru.startandroid.koordinator.MainActivity.class);
+        intent.putExtra("id", id);
+        startActivity(intent);
+        finish();
     }
 }

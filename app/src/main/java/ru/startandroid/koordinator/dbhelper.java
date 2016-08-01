@@ -23,9 +23,10 @@ public class dbhelper extends SQLiteOpenHelper {
         public final String KEY_ID = "id_tasks_list";
         public final String KEY_INFO = "info";
         public final String KEY_ID_STATUS_TASKS = "id_status_tasks";
-        public final String KEY_ID_USERS = "id_users";
+        public final String KEY_ID_USERS = "id_users_tasks";
         public final String KEY_DT_START = "dt_start";
         public final String KEY_DT_STOP = "dt_stop";
+        public final String KEY_ID_DT_FINAL = "id_dt_final";
         public final String KEY_STREET = "Street";
     }
 
@@ -39,7 +40,7 @@ public class dbhelper extends SQLiteOpenHelper {
     public static class group{
         public final String TABLE_NAME = "group_users";
         public final String KEY_NAME = "name";
-        public final String KEY_ID = "id_group_users";
+        public final String KEY_ID = "id_group";
     }
 
     public static class settings{
@@ -52,7 +53,7 @@ public class dbhelper extends SQLiteOpenHelper {
     public static class status_tasks{
         public final String TABLE_NAME = "status_tasks";
         public final String KEY_NAME = "name";
-        public final String KEY_ID = "id_status_tasks";
+        public final String KEY_ID = "id_status";
     }
 
     /*

@@ -2,11 +2,15 @@ package ru.startandroid.koordinator;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -18,7 +22,7 @@ import javax.net.ssl.HttpsURLConnection;
  * Created by ADM on 25.07.2016.
  */
 public class http {
-    public static String DomainURL = "http://192.168.0.177/api/";
+    public static String DomainURL = "http://192.168.0.177/";
     String response = "";
 
     public String http_query(String requestURL,
@@ -79,5 +83,62 @@ public class http {
 
             return result.toString();
         }
+    //  new AsyncTask<String, Integer, File>() {
+
+    public File downloadFile(String requestURL) {
+
+        URL url;
+        InputStream inputStream;
+        int totalSize;
+        int downloadedSize;
+        byte[] buffer;
+        int bufferLength;
+
+        File file = null;
+        FileOutputStream fos = null;
+
+                try {
+                    url = new URL(DomainURL.concat(requestURL));
+
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setReadTimeout(15000);
+                    conn.setConnectTimeout(15000);
+                    conn.setRequestMethod("POST");
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
+                    conn.connect();
+
+                    file = File.createTempFile("Mustachify", "download");
+                    fos = new FileOutputStream(file);
+                    inputStream = conn.getInputStream();
+
+                    totalSize = conn.getContentLength();
+                    downloadedSize = 0;
+
+                    buffer = new byte[1024];
+                    bufferLength = 0;
+
+                    // читаем со входа и пишем в выход,
+                    // с каждой итерацией публикуем прогресс
+                    while ((bufferLength = inputStream.read(buffer)) > 0) {
+                        fos.write(buffer, 0, bufferLength);
+                        downloadedSize += bufferLength;
+                    }
+
+                    fos.close();
+                    inputStream.close();
+
+                    return file;
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                    file.delete();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    file.delete();
+                }
+
+                return null;
+            }
+
     }
 

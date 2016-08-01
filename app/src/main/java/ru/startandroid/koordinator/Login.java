@@ -38,7 +38,7 @@ public class Login extends AppCompatActivity {
         postData.put("login", emailtxt.getText().toString());
         postData.put("pass", passtxt.getText().toString());
 
-        out = QHttp.http_query("auth", postData);
+        out = QHttp.http_query("index.php", postData);
 
         try {
             if (!out.equals("")){

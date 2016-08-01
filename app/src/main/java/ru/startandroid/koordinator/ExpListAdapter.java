@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,7 +23,9 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
     private ArrayList<ArrayList<String>> mGroups;
     private ArrayList<Map<String, String>> groupData;
     private ArrayList<ArrayList<Map<String, String>>> childData;
+    private Map<String, String> id;
     private Context mContext;
+    private Map<String, String> m;
 
     public ExpListAdapter (Context context, ArrayList<Map<String, String>> groups , ArrayList<ArrayList<Map<String, String>>> child){
         mContext = context;
@@ -104,15 +107,18 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
         TextView text_date_start = (TextView) convertView.findViewById(R.id.text_date_start);
         TextView text_date_stop = (TextView) convertView.findViewById(R.id.text_date_stop);
         ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView2);
-        Map<String, String> m;
 
         m = childData.get(groupPosition).get(childPosition);
+
+        id.put(groupPosition + " " + childPosition, m.get("id"));
+
         text_zadanie.setText(m.get("info"));
         text_date_start.setText(m.get("sart"));
         text_date_stop.setText(m.get("stop"));
 
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         try {
             Date dateSart = format.parse(m.get("sart"));
             Date dateStop = format.parse(m.get("stop"));
@@ -122,6 +128,14 @@ public class ExpListAdapter extends BaseExpandableListAdapter {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Toast.makeText(mContext, m.get("id"), 5000).show();
+            }
+        });
 
  /*       textChild.setText(mGroups.get(groupPosition).get(childPosition));
 

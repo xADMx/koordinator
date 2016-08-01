@@ -75,6 +75,7 @@ public class out_helper {
                     childDataItem = new ArrayList<Map<String, String>>();
                     do {
                         m = new HashMap<String, String>();
+                        m.put("id", cursor.getString(idIndexCursor2)); // имя компании
                         m.put("info", cursor.getString(infoCursor2)); // имя компании
                         m.put("dtstop", cursor.getString(dtstopCursor2)); // имя компании
                         m.put("dtstart", cursor.getString(dtstartCursor2)); // имя компании
